@@ -41,13 +41,19 @@ public class Player : MonoBehaviour
         else if (move < 0)
             transform.localScale = new Vector3(-1, 1, 1);
 
-        bool isRunning = move != 0;
-        anim.SetBool("isRunning", isRunning);
-
         Vector2 velocity = rb.linearVelocity;
+
         velocity.x = move * speed;
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        bool isGrounded = Mathf.Abs(rb.linearVelocity.y) < 0.01f;
+        bool isJumping = !isGrounded && rb.linearVelocity.y > 0.1f;
+        bool isFalling = rb.linearVelocity.y < -0.1f;
+
+        anim.SetBool("isRunning", move != 0);
+        anim.SetBool("isJumping", isJumping);
+        anim.SetBool("isFalling", isFalling);
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && isGrounded)
         {
             velocity.y = jumpForce;
         }
@@ -82,17 +88,27 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!gameObject.activeInHierarchy) return;
+
         if (collision.gameObject.CompareTag("MovingPlatform"))
         {
-            transform.parent = collision.transform;
+            transform.SetParent(collision.transform);
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        if (!gameObject.activeInHierarchy) return;
+
         if (collision.gameObject.CompareTag("MovingPlatform"))
         {
-            transform.parent = null;
+            transform.SetParent(null);
         }
+    }
+
+    private IEnumerator UnparentSafe()
+    {
+        yield return null;
+        transform.SetParent(null);
     }
 }

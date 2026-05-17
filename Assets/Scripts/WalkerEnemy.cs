@@ -9,16 +9,23 @@ public class WalkerEnemy : MonoBehaviour
 
     private int direction = -1;
     private Rigidbody2D rb;
+    private SpriteRenderer sr;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
         StartCoroutine(MoveRoutine());
     }
 
     void Update()
     {
         rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocity.y);
+
+        if (direction > 0)
+            sr.flipX = true;
+        else if (direction < 0)
+            sr.flipX = false;
     }
 
     IEnumerator MoveRoutine()
