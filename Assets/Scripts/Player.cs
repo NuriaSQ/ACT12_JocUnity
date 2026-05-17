@@ -11,12 +11,14 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+    private Animator anim;
     private bool isInvincible;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
 
         transform.position = GameManager.Instance.GetStartPosition();
     }
@@ -33,6 +35,14 @@ public class Player : MonoBehaviour
             if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
                 move = 1;
         }
+
+        if (move > 0)
+            transform.localScale = new Vector3(1, 1, 1);
+        else if (move < 0)
+            transform.localScale = new Vector3(-1, 1, 1);
+
+        bool isRunning = move != 0;
+        anim.SetBool("isRunning", isRunning);
 
         Vector2 velocity = rb.linearVelocity;
         velocity.x = move * speed;
