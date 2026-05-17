@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+
+        transform.position = GameManager.Instance.GetStartPosition();
     }
 
     void Update()

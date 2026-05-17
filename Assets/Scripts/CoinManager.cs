@@ -22,4 +22,10 @@ public class CoinManager : MonoBehaviour
         Amount += value;
         OnCoinChanged?.Invoke(Amount);
     }
+
+    public void ResetCoins()
+    {
+        Amount = 0;
+        OnCoinChanged?.Invoke(Amount);
+    }
 }

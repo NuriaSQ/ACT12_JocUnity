@@ -21,5 +21,10 @@ public class LifeManager : MonoBehaviour
         lives = Mathf.Max(lives, 0);
 
         OnLivesChanged?.Invoke(lives);
+
+        if (lives <= 0)
+        {
+            GameManager.Instance.GameOver();
+        }
     }
 }
