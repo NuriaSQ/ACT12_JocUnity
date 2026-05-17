@@ -20,7 +20,7 @@ public class FrogEnemy : MonoBehaviour
                 }
                 else
                 {
-                    LifeManager.Instance.TakeDamage(1);
+                    collision.gameObject.GetComponent<Player>().TakeDamage();
                     return;
                 }
             }
